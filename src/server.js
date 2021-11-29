@@ -23,7 +23,7 @@ const io = new Server(server, {
   },
 });
 // const { getUser, leaveChat, joinChat } = require("./users");
-const port = 8000;
+const port = 3000;
 
 const users = {};
 const chatHistory = {};
@@ -31,7 +31,7 @@ const chatHistory = {};
 // Setting up the server
 server.listen(
   port,
-  console.log(`Server is running on the port no: ${port} `.green)
+  console.log(`Server is running on the port no: ${port} `)
 );
 
 // Middleware for  placing uid in socket

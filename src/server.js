@@ -13,7 +13,7 @@ const { join } = require("path");
 app.use(express());
 app.use(cors());
 
-//
+//-
 const server = http.createServer(app);
 
 const io = new Server(server, {
@@ -29,11 +29,7 @@ const users = {};
 const chatHistory = {};
 
 // Setting up the server
-server.listen(
-  port,
-  console.log(`Server is running on the port no: ${port} `)
-);
-
+server.listen(port, console.log(`Server is running on the port no: ${port} `));
 
 // Middleware for  placing uid in socket
 io.use((socket, next) => {
@@ -100,13 +96,20 @@ io.on("connection", (socket) => {
   });
 
   socket.on("leave-room", ({ roomToLeave, leavingPerson }) => {
-    delete users[leavingPerson];
+    // delete users[leavingPerson];
+
+    users[leavingPerson]?.joinedRooms.forEach((joinedRoomId) => {
+      if (joinedRoomId === roomToLeave) {
+        delete users[leavingPerson]?.joinedRooms[roomToLeave];
+      }
+    });
 
     if (chatHistory[roomToLeave]) {
       chatHistory[roomToLeave].users -= 1;
       chatHistory[roomToLeave].users < 1 && delete chatHistory[roomToLeave];
     }
 
+    // console.log("someone left the room and the room id is ->", leavingPerson);
     // console.log("chat history on leaving room", chatHistory);
   });
 
